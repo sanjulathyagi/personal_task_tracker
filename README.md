@@ -49,8 +49,8 @@ assessment/
 
 1. Clone the repository:
 
-git clone https://your-repo-url.git
-cd personal-task-goal-tracker
+git clone https://github.com/sanjulathyagi/personal_task_tracker.git
+cd personal-task-tracker
 
 
 2. Build and start all containers (backend, frontend, MySQL):
