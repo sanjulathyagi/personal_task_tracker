@@ -1,8 +1,8 @@
-version: '3.8'
-
 services:
+  ### MySQL ###
   mysql:
     image: mysql:8
+    container_name: mysql
     restart: unless-stopped
     ports:
       - "3307:3306"
@@ -12,32 +12,57 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
 
+  ### Laravel Backend ###
   backend:
     build:
       context: ./personal-tracker-backend
       dockerfile: Dockerfile
+    container_name: backend
     restart: unless-stopped
+    volumes:
+      - ./personal-tracker-backend:/var/www
+    depends_on:
+      - mysql
     ports:
-      - "8000:9000"
+      - "8000:8000"
+    working_dir: /var/www
+    command: php artisan serve --host=0.0.0.0 --port=8000
     environment:
+      DB_CONNECTION: mysql
       DB_HOST: mysql
+      DB_PORT: 3306
       DB_DATABASE: personal_tracker
       DB_USERNAME: user
       DB_PASSWORD: password
-    depends_on:
-      - mysql
 
+  ### React Frontend ###
   frontend:
     build:
       context: ./personal-tracker-frontend
       dockerfile: Dockerfile
+    container_name: frontend
     restart: unless-stopped
+    volumes:
+      - ./personal-tracker-frontend:/app
     ports:
-      - "3000:3000"
+      - "3001:3000"
+    stdin_open: true
+    tty: true
     depends_on:
       - backend
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: npm start
+
+     ### Adminer ###
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "8080:8080" 
 
 volumes:
-  mysql-data:
+  mysql_data:

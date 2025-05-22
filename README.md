@@ -38,7 +38,6 @@ assessment/
 └── ...
 
 
-
 ## Setup Instructions
 
 ### Prerequisites
@@ -49,47 +48,89 @@ assessment/
 
 1. Clone the repository:
 
-git clone https://github.com/sanjulathyagi/personal_task_tracker.git
-cd personal-task-tracker
+- git clone https://github.com/sanjulathyagi/personal_task_tracker.git
+
+  cd assessment
 
 
-2. Build and start all containers (backend, frontend, MySQL):
+2. Copy .env file and generate app key:
+    
+    cp personal-tracker-backend/.env.example personal-tracker-backend/.env
 
-docker-compose up --build
-
-3. The backend Laravel API will be available at:  
-`http://localhost:8000`
-
-4. The React frontend will be available at:  
-`http://localhost:3000`
-
-5. MySQL database runs inside Docker on port 3307 (adjust if needed)
-
-6. Access phpMyAdmin or your preferred DB client if configured, or connect directly using credentials from `.env`.
-
-7. Run migrations (inside backend container):
-
-docker-compose exec backend php artisan migrate
+    docker-compose exec backend php artisan key:generate
 
 
-8. Register a user via the frontend and start managing your tasks and goals!
+3. Build and start all containers (backend, frontend, MySQL):
+
+    docker-compose up --build
+
+4. URLs: 
+
+    Backend API: http://localhost:8000
+    Frontend React App: http://localhost:3000 (or port 3001 if 3000 is in use)
+
+5. MySQL Database
+
+    Runs in Docker on internal port 3306
+
+    If accessing externally (e.g. via phpMyAdmin), use mapped port 3307
+
+    Default credentials (based on .env and docker-compose.yml):
+
+    DB_CONNECTION=mysql
+    DB_HOST=mysql
+    DB_PORT=3306
+    DB_DATABASE=personal_tracker
+    DB_USERNAME=root
+    DB_PASSWORD=
+
+
+6. Run database migrations (inside backend container):
+ 
+    docker-compose exec backend php artisan migrate
+
+7. Sanctum Configuration
+
+    SANCTUM_STATEFUL_DOMAINS=localhost:3000,localhost:3001
+    SESSION_DOMAIN=localhost
+
+- Ensure config/sanctum.php has:
+
+    'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', 'localhost:3000')),
+
 
 ## Design Patterns and SOLID Principles
 
-- The backend follows SOLID principles to maintain clean and maintainable code.
-- Used Repository Pattern to abstract database interactions from business logic.
-- Separation of concerns is ensured between frontend and backend for modularity.
+- Backend code follows SOLID principles for clean, maintainable structure
+
+- Implements the Repository Pattern to abstract database queries
+
+- Clear separation between business logic and data access
+
+- Modular structure with RESTful API principles
 
 ## Environment Variables
 
 - Backend uses `.env` file to store sensitive info like database credentials and app keys.
 - Example:
 
-DB_HOST=mysql
-DB_PORT=3307
-DB_DATABASE=personal_tracker
-DB_USERNAME=user
-DB_PASSWORD=password
+    APP_NAME=PersonalTaskTracker
+    APP_URL=http://localhost:8000
+
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=personal_tracker
+    DB_USERNAME=user
+    DB_PASSWORD=password
+
+
+    SESSION_DRIVER=file
+    SESSION_DOMAIN=.localhost
+    SESSION_SECURE_COOKIE=false
+    SESSION_SAME_SITE=lax
+    SESSION_LIFETIME=120
+    SANCTUM_STATEFUL_DOMAINS=localhost:3000,localhost:3001
 
 
 
