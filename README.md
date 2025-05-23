@@ -11,12 +11,15 @@ Many individuals struggle to stay organized and productive when managing multipl
 - Mark Tasks as complete
 - Dashboard to view active Goals, pending and completed Tasks, and progress toward Goals
 
+
 ## Tech Stack
 - **Backend:** Laravel (PHP), following SOLID principles and Repository design pattern
 - **Frontend:** React.js with Tailwind CSS for UI styling
 - **Database:** MySQL (running inside Docker)
 - **Containerization:** Docker for backend, frontend, and database
 - **Authentication:** Laravel Sanctum for API token authentication
+- **Chart Generation:** recharts 
+- **JS-Cookie:** For easy to set, get and remove cookies
 - **Other:** Environment variables for configuration
 
 ## Project Structure
@@ -132,7 +135,14 @@ assessment/
     SESSION_LIFETIME=120
     SANCTUM_STATEFUL_DOMAINS=localhost:3000,localhost:3001
 
-
+## Problems You're Solving
+-  User Authentication & Session Management
+         Maintain authenticated sessions via cookies between the React frontend and Laravel backend
+- Frontend-Backend Separation
+        Communicate using secure HTTP API requests
+- CSRF & Cookie-based Auth Handling
+        Set up session configuration (SESSION_DOMAIN, SESSION_SECURE_COOKIE, etc.) correctly for cross-origin requests.
+- Local Development with Docker
 
 ## Author
 

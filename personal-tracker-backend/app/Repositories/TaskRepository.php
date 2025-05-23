@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace App\Repositories;
 
 use App\Models\Task;
@@ -18,9 +16,9 @@ class TaskRepository implements TaskRepositoryInterface
         return Task::create($data);
     }
 
-    public function update($id, array $data)
+     public function update($id, array $data)
     {
-        $task = Task::findOrFail($id);
+        $task = $this->find($id);
         $task->update($data);
         return $task;
     }

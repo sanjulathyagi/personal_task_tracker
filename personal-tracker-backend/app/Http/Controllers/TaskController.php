@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Repositories\TaskRepositoryInterface;
 use App\Models\Task;
 use App\Models\Goal;
@@ -8,7 +9,15 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    // Store a new task for a specific goal
+    protected $taskRepo;
+
+    // Constructor to inject repository
+    public function __construct(TaskRepositoryInterface $taskRepo)
+    {
+        $this->taskRepo = $taskRepo;
+    }
+
+    //  Store a new task for a specific goal
     public function store(Request $request, $goalId)
     {
         $goal = Goal::findOrFail($goalId);
@@ -23,32 +32,35 @@ class TaskController extends Controller
         return response()->json($task, 201);
     }
 
-    // Retrieve all tasks for a specific goal
+    //  Retrieve all tasks for a specific goal
     public function index($goalId)
     {
         $goal = Goal::with('tasks')->findOrFail($goalId);
-
         return response()->json($goal->tasks);
     }
 
-    public function update(Request $request, Task $task)
+    // Update a task
+   public function update(Request $request, $id)
 {
     $validated = $request->validate([
-        'status' => 'required|boolean',
+        'title' => 'nullable|string|max:255',
+        'status' => 'nullable|boolean',
     ]);
 
-    $task->status = $validated['status'];
-    $task->save();
+    $task = Task::find($id);
+    if (!$task) {
+        return response()->json(['error' => 'Task not found'], 404);
+    }
+
+    $task->update($validated);
 
     return response()->json($task);
 }
 
-public function destroy(Task $task)
-{
-    $task->delete();
-    return response()->json(['message' => 'Task deleted successfully.']);
+    //  Delete a task
+    public function destroy(Task $task)
+    {
+        $task->delete();
+        return response()->json(['message' => 'Task deleted successfully.']);
+    }
 }
-
-}
-
-

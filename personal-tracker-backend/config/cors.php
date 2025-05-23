@@ -2,18 +2,17 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Cross-Origin Resource Sharing (CORS) Configuration
-    |--------------------------------------------------------------------------
-    */
-
-   'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout'],
+    'paths' => [
+        'api/*',
+        'sanctum/csrf-cookie',
+        'login',
+        'logout',
+        'broadcasting/auth',
+    ],
 
     'allowed_methods' => ['*'],
 
-    // Only allow the React frontend URL here (change if needed)
-   'allowed_origins' => ['http://localhost:3001'],
+    'allowed_origins' => ['http://localhost:3001'],
 
     'allowed_origins_patterns' => [],
 

@@ -15,4 +15,17 @@ class GoalRepository implements GoalRepositoryInterface
     {
         return Goal::create($data);
     }
+    public function delete($id)
+{
+    $goal = Goal::findOrFail($id); 
+    return $goal->delete();
+}
+ // Update an existing goal
+    public function update($id, array $data)
+    {
+        $goal = $this->find($id);
+        $goal->update($data);
+        return $goal;
+    }
+
 }

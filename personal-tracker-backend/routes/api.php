@@ -17,23 +17,32 @@ use App\Http\Controllers\DashboardController;
 | which is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-// Public routes
-Route::post('/register', [AuthController::class, 'register']);
-//Route::post('/login', [AuthController::class, 'login']);
-Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:20,1');
+// auth routes
 
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+// Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:20,1');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-// Protected routes
+// for goal
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/goals', [GoalController::class, 'index']);
     Route::post('/goals', [GoalController::class, 'store']);
+    Route::delete('/goals/{goal}', [GoalController::class, 'destroy']);
+    Route::put('/goals/{id}', [GoalController::class, 'update']);
+});
 
-   Route::get('/goals/{goal}/tasks', [TaskController::class, 'index']);
+// for task
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/goals/{goal}/tasks', [TaskController::class, 'index']);
     Route::post('/goals/{goal}/tasks', [TaskController::class, 'store']);
-     Route::put('/tasks/{task}', [TaskController::class, 'update']);
-     Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
+    Route::put('/tasks/{id}', [TaskController::class, 'update']);
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
+    
+});
 
+// for dashboard
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard-stats', [DashboardController::class, 'stats']);
     Route::get('/user', function (Request $request) {
         return $request->user();
