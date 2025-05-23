@@ -1,153 +1,70 @@
-# Personal Task & Goal Tracker
+# Getting Started with Create React App
 
-## Problem Statement
-Many individuals struggle to stay organized and productive when managing multiple tasks and personal goals. This application helps users create, manage, and monitor their tasks and goals efficiently within a simple, user-friendly interface.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Features
-- User authentication (sign-up/login) using Laravel Sanctum
-- Create, update, and delete Tasks
-- Create, update, and delete Goals
-- Associate Tasks with specific Goals
-- Mark Tasks as complete
-- Dashboard to view active Goals, pending and completed Tasks, and progress toward Goals
+## Available Scripts
 
+In the project directory, you can run:
 
-## Tech Stack
-- **Backend:** Laravel (PHP), following SOLID principles and Repository design pattern
-- **Frontend:** React.js with Tailwind CSS for UI styling
-- **Database:** MySQL (running inside Docker)
-- **Containerization:** Docker for backend, frontend, and database
-- **Authentication:** Laravel Sanctum for API token authentication
-- **Chart Generation:** recharts 
-- **JS-Cookie:** For easy to set, get and remove cookies
-- **Other:** Environment variables for configuration
+### `npm start`
 
-## Project Structure
-assessment/
-│
-├── personal-tracker-backend/ # Laravel backend API
-│ ├── app/
-│ ├── config/
-│ ├── database/
-│ └── ...
-│
-├── personal-tracker-frontend/ # React frontend app
-│ ├── src/
-│ ├── public/
-│ └── ...
-│
-├── docker-compose.yml # Docker configuration for backend, frontend, and MySQL
-├── README.md
-└── ...
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-## Setup Instructions
+### `npm test`
 
-### Prerequisites
-- Docker & Docker Compose installed on your machine
-- Node.js and npm installed (for local frontend dev, optional if using Docker)
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### Steps
+### `npm run build`
 
-1. Clone the repository:
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-- git clone https://github.com/sanjulathyagi/personal_task_tracker.git
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-  cd assessment
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `npm run eject`
 
-2. Copy .env file and generate app key:
-    
-    cp personal-tracker-backend/.env.example personal-tracker-backend/.env
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-    docker-compose exec backend php artisan key:generate
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-3. Build and start all containers (backend, frontend, MySQL):
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-    docker-compose up --build
+## Learn More
 
-4. URLs: 
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-    Backend API: http://localhost:8000
-    Frontend React App: http://localhost:3000 (or port 3001 if 3000 is in use)
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-5. MySQL Database
+### Code Splitting
 
-    Runs in Docker on internal port 3306
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-    If accessing externally (e.g. via phpMyAdmin), use mapped port 3307
+### Analyzing the Bundle Size
 
-    Default credentials (based on .env and docker-compose.yml):
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-    DB_CONNECTION=mysql
-    DB_HOST=mysql
-    DB_PORT=3306
-    DB_DATABASE=personal_tracker
-    DB_USERNAME=root
-    DB_PASSWORD=
+### Making a Progressive Web App
 
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-6. Run database migrations (inside backend container):
- 
-    docker-compose exec backend php artisan migrate
+### Advanced Configuration
 
-7. Sanctum Configuration
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-    SANCTUM_STATEFUL_DOMAINS=localhost:3000,localhost:3001
-    SESSION_DOMAIN=localhost
+### Deployment
 
-- Ensure config/sanctum.php has:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-    'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', 'localhost:3000')),
+### `npm run build` fails to minify
 
-
-## Design Patterns and SOLID Principles
-
-- Backend code follows SOLID principles for clean, maintainable structure
-
-- Implements the Repository Pattern to abstract database queries
-
-- Clear separation between business logic and data access
-
-- Modular structure with RESTful API principles
-
-## Environment Variables
-
-- Backend uses `.env` file to store sensitive info like database credentials and app keys.
-- Example:
-
-    APP_NAME=PersonalTaskTracker
-    APP_URL=http://localhost:8000
-
-    DB_CONNECTION=mysql
-    DB_HOST=127.0.0.1
-    DB_PORT=3306
-    DB_DATABASE=personal_tracker
-    DB_USERNAME=user
-    DB_PASSWORD=password
-
-
-    SESSION_DRIVER=file
-    SESSION_DOMAIN=.localhost
-    SESSION_SECURE_COOKIE=false
-    SESSION_SAME_SITE=lax
-    SESSION_LIFETIME=120
-    SANCTUM_STATEFUL_DOMAINS=localhost:3000,localhost:3001
-
-## Problems You're Solving
--  User Authentication & Session Management
-         Maintain authenticated sessions via cookies between the React frontend and Laravel backend
-- Frontend-Backend Separation
-        Communicate using secure HTTP API requests
-- CSRF & Cookie-based Auth Handling
-        Set up session configuration (SESSION_DOMAIN, SESSION_SECURE_COOKIE, etc.) correctly for cross-origin requests.
-- Local Development with Docker
-
-## Author
-
-- Sanjula Athauda — [sanjulathyagi@gmail.com]
-
----
-
-Thank you for reviewing my Personal Task & Goal Tracker application!
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
